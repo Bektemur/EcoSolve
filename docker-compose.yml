@@ -1,0 +1,6 @@
+services:
+  ecosolve:
+    image: ${DOCKER_REGISTRY-}ecosolve
+    build:
+      context: .
+      dockerfile: EcoSolve/Dockerfile
