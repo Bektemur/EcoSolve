@@ -89,7 +89,13 @@ namespace EcoSolve.Controllers
         {
             try
             {
-                var value = gpio.Read(sensorPin);
+                var pin = 27;
+                if (!gpio.IsPinOpen(pin))
+                {
+                    gpio.OpenPin(pin, PinMode.Input);
+                }
+
+                var value = gpio.Read(pin);
                 bool isDry = value == PinValue.High;
 
                 return Ok(new
@@ -102,7 +108,7 @@ namespace EcoSolve.Controllers
             {
                 return StatusCode(500, new
                 {
-                    error = "Ошибка при чтении GPIO",
+                    error = "GPIO read failed",
                     message = ex.Message
                 });
             }
