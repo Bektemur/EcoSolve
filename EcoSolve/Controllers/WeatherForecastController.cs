@@ -1,6 +1,7 @@
 using Iot.Device.Adc;
 using Microsoft.AspNetCore.Mvc;
 using System.Device.Gpio;
+using System.Device.Gpio.Drivers;
 using System.Device.Spi;
 using System.Reflection.Metadata.Ecma335;
 
@@ -15,14 +16,13 @@ namespace EcoSolve.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
         private readonly int sensorPin = 27; // GPIO27
-        private static GpioController gpio = new GpioController();
+        private static GpioController gpio = new GpioController(PinNumberingScheme.Logical, new LibGpiodDriver(0)); // 0 = /dev/gpiochip0
         private readonly ILogger<WeatherForecastController> _logger;
 
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            gpio = new GpioController(); // или внедри через DI, если используешь
 
             try
             {
